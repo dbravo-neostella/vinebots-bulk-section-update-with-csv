@@ -1,0 +1,9 @@
+credentials.py
+tokens.txt
+Failed_sections.txt
+__pycache__
+test_writing.py
+Notes.docx
+phases.json
+failed_removals.csv
+successful_removals.csv
