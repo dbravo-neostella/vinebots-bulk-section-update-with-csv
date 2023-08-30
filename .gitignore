@@ -5,5 +5,7 @@ __pycache__
 test_writing.py
 Notes.docx
 phases.json
-failed_removals.csv
-successful_removals.csv
+failed_updates.csv
+successful_updates.csv
+input.csv
+input-test.csv
