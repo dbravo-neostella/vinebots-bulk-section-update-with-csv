@@ -7,5 +7,4 @@ Notes.docx
 phases.json
 failed_updates.csv
 successful_updates.csv
-input.csv
-input-test.csv
+input_csv
