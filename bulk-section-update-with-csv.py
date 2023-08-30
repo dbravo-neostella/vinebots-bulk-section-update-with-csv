@@ -37,24 +37,47 @@ with open('input_csv/input-test.csv', 'r') as file:
             "projectId": int(row["FV Project ID"])
         })
 
-# Iterate through the list of contacts and remove emails
+# Iterate through the list of projects and update them
 for project in projects_from_csv:
     project_id = project["projectId"]
 
+    # Check if section and field selectors exist
     try:
-        response = requests.patch(
+        response = requests.get(
             BASE_URL + f"/core/projects/{project_id}/forms/{section_selector}",
-            headers=headers,
-            json=field_selectors
+            headers=headers
         )
         handle_rate_limit()
-        if response.status_code == 200:
-            successful_updates.append(project_id)
+
+        if response.status_code != 200:
+            failed_updates.append({
+                "projectId": project_id,
+                "error": f"Section {section_selector} does not exist for project."
+            })
+            continue
+
+        data = response.json()
+
+        if all(key in data for key in field_selectors.keys()):
+            response_patch = requests.patch(
+                BASE_URL + f"/core/projects/{project_id}/forms/{section_selector}",
+                headers=headers,
+                json=field_selectors
+            )
+            handle_rate_limit()
+            if response_patch.status_code == 200:
+                successful_updates.append(project_id)
+            else:
+                failed_updates.append({
+                    "projectId": project_id,
+                    "error": response_patch.text
+                })
         else:
             failed_updates.append({
                 "projectId": project_id,
-                "error": response.text
+                "error": f"Missing field selectors in section {section_selector}"
             })
+
     except Exception as e:
         print("\nError occurred:", e)
         handle_rate_limit()
