@@ -30,7 +30,7 @@ failed_updates = []
 
 projects_from_csv = []
 
-with open('input-test.csv', 'r') as file:
+with open('input_csv/input-test.csv', 'r') as file:
     reader = csv.DictReader(file)
     for row in reader:
         projects_from_csv.append({
