@@ -1,12 +1,23 @@
+import os
 import csv
 import requests
-from credentials import API_KEY, API_SECRET, BASE_URL
+import time
 from filevine_utils import (
     TOKENS_TEMPLATE,
     create_headers,
     handle_authentication,
     handle_rate_limit
 )
+from dotenv import load_dotenv
+from get_secret import get_secret
+
+load_dotenv()
+
+secrets = get_secret(os.environ['SECRET_NAME'])
+API_KEY = secrets["API_KEY"]
+API_SECRET = secrets["API_SECRET"]
+BASE_URL = os.environ['BASE_URL']
+
 
 headers_authentication = {"Content-Type": "application/json"}
 
@@ -77,6 +88,8 @@ for project in projects_from_csv:
                 "projectId": project_id,
                 "error": f"Missing field selectors in section {section_selector}"
             })
+
+        time.sleep(5)
 
     except Exception as e:
         print("\nError occurred:", e)

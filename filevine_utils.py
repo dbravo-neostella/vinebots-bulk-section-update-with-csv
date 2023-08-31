@@ -26,7 +26,7 @@ def handle_rate_limit():
     global API_CALL_COUNT, LAST_API_CALL_TIME
 
     API_CALL_COUNT += 1
-    if API_CALL_COUNT >= 300:
+    if API_CALL_COUNT >= 200:
         time_diff = datetime.now() - LAST_API_CALL_TIME
         if time_diff.seconds < 60:
             time.sleep(60 - time_diff.seconds)
